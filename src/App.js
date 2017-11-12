@@ -11,6 +11,9 @@ class App extends Component {
         earnings: 0,
         taxes: 0,
         deductions: 0
+      },
+      employee: {
+        monthly: 0
       }
     }
 
@@ -20,17 +23,24 @@ class App extends Component {
   handleInputChange(event) {
     const { name, value } = event.target
     this.setState({
+      ...this.state,
       contract: {
         ...this.state.contract,
         [name]: parseInt(value, 10),
-      }
+      },
     })
   }
 
   calculate() {
     const { earnings, taxes, deductions } = this.state.contract
     const netValue = earnings - taxes - deductions
-    contractToEmployee(netValue)
+    const salary = contractToEmployee.netToGross(netValue)
+    this.setState({
+      ...this.state,
+      employee: {
+        monthly: salary
+      }
+    })
   }
 
   render() {
@@ -59,7 +69,7 @@ class App extends Component {
         >
         </input>
         <button type="submit" onClick={this.calculate.bind(this)}>Calcular</button>
-        <p>{this.state.monthly}</p>
+        <p>{this.state.employee.monthly}</p>
       </div>
     );
   }
