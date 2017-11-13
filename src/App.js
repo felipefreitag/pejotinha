@@ -8,12 +8,12 @@ class App extends Component {
 
     this.state = {
       contract: {
-        earnings: 0,
+        grossEarnings: 0,
         taxes: 0,
         deductions: 0
       },
       employee: {
-        monthly: 0
+        grossMonthly: 0
       }
     }
 
@@ -26,19 +26,20 @@ class App extends Component {
       ...this.state,
       contract: {
         ...this.state.contract,
-        [name]: parseInt(value, 10),
+        [name]: parseFloat(value),
       },
     })
   }
 
   calculate() {
-    const { earnings, taxes, deductions } = this.state.contract
-    const netValue = earnings - taxes - deductions
-    const salary = contractToEmployee.netToGross(netValue)
+    const { grossEarnings, taxes, deductions } = this.state.contract
+    const netValue = grossEarnings - taxes - deductions
+    const anualNetEarnings = netValue * 12
+    const salary = contractToEmployee.netToGross(anualNetEarnings)
     this.setState({
       ...this.state,
       employee: {
-        monthly: salary
+        grossMonthly: salary
       }
     })
   }
@@ -49,7 +50,7 @@ class App extends Component {
         <h1>Pejotinha</h1>
         <input
           type="number"
-          name="earnings"
+          name="grossEarnings"
           placeholder="Salário PJ"
           onChange={this.handleInputChange}
         >
@@ -69,7 +70,8 @@ class App extends Component {
         >
         </input>
         <button type="submit" onClick={this.calculate.bind(this)}>Calcular</button>
-        <p>{this.state.employee.monthly}</p>
+        <p>Salário CLT equivalente:</p>
+        <p>{this.state.employee.grossMonthly}</p>
       </div>
     );
   }

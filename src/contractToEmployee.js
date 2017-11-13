@@ -1,13 +1,13 @@
 const contractToEmployee = {
-
-  netToGross: (netValue) => {
-    return contractToEmployee.revertInss(netValue)
+  netToGross: (anualNetValue) => {
+    const monthlyNet = anualNetValue / 13.3
+    return contractToEmployee.revertInss(contractToEmployee.revertIrrf(monthlyNet))
   },
 
   revertIrrf: (netValue) => {
     let result = 0;
     if (netValue <= 1903.98) {
-      result = 0
+      result = netValue
     } else if (netValue <= 2757.45) {
       result = (netValue - 142.80)/(1-0.075)
     } else if (netValue <= 3543.19) {
@@ -57,7 +57,4 @@ const contractToEmployee = {
   }
 }
 
-
-
 export default contractToEmployee
-//export { irrfCalc, revertIrrf }
