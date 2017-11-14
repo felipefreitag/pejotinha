@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
-import './App.css'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import AppBar from 'material-ui/AppBar'
+import Layout from './Layout'
 import contractToEmployee from './contractToEmployee'
+import './App.css'
 
 class App extends Component {
   constructor(props) {
@@ -17,7 +20,7 @@ class App extends Component {
       }
     }
 
-    this.handleInputChange = this.handleInputChange.bind(this)
+    // this.handleInputChange = this.handleInputChange.bind(this)
   }
 
   handleInputChange(event) {
@@ -46,33 +49,19 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <h1>Pejotinha</h1>
-        <input
-          type="number"
-          name="grossEarnings"
-          placeholder="Salário PJ"
-          onChange={this.handleInputChange}
-        >
-        </input>
-        <input
-          type="number"
-          name="taxes"
-          placeholder="Impostos"
-          onChange={this.handleInputChange}
-        >
-        </input>
-        <input
-          type="number"
-          name="deductions"
-          placeholder="Outras deduções"
-          onChange={this.handleInputChange}
-        >
-        </input>
-        <button type="submit" onClick={this.calculate.bind(this)}>Calcular</button>
-        <p>Salário CLT equivalente:</p>
-        <p>{this.state.employee.grossMonthly}</p>
-      </div>
+      <MuiThemeProvider>
+        <div className="App">
+          <AppBar
+            title="Pejotinha"
+            showMenuIconButton={false}
+          />
+          <Layout
+            handleInputChange={this.handleInputChange.bind(this)}
+            calculate={this.calculate.bind(this)}
+            grossMonthly={this.state.employee.grossMonthly}
+          />
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
